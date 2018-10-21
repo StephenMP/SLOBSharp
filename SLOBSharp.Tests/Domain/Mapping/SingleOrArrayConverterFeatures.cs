@@ -13,21 +13,13 @@ namespace SLOBSharp.Tests.Domain.Mapping
         }
 
         [Fact]
-        public void CanReadAnArrayOfResults()
+        public void CanConvertListTypes()
         {
-            for (var i = 0; i < new Random().Next(1, 20); i++)
-            {
-                this.steps.GivenIHaveAResultString();
-            }
+            this.steps.GivenIHaveASingleOrArrayConverter();
 
-            this.steps.GivenIHaveJsonWithMultipleResults();
+            this.steps.WhenIAskToConvertListType();
 
-            this.steps.WhenIDeserializeTheJson();
-
-            this.steps.ThenIShouldHaveAResultDto();
-            this.steps.ThenMyResultDtoShouldHaveResults();
-            this.steps.ThenMyResultDtoShouldHaveTheSameNumberOfResults();
-            this.steps.ThenTheResultDtoResultsShouldEqualTheJsonResults();
+            this.steps.ThenIShouldBeAbleToConvertListTypes();
         }
 
         [Fact]
@@ -60,6 +52,24 @@ namespace SLOBSharp.Tests.Domain.Mapping
         }
 
         [Fact]
+        public void CanReadAnArrayOfResults()
+        {
+            for (var i = 0; i < new Random().Next(1, 20); i++)
+            {
+                this.steps.GivenIHaveAResultString();
+            }
+
+            this.steps.GivenIHaveJsonWithMultipleResults();
+
+            this.steps.WhenIDeserializeTheJson();
+
+            this.steps.ThenIShouldHaveAResultDto();
+            this.steps.ThenMyResultDtoShouldHaveResults();
+            this.steps.ThenMyResultDtoShouldHaveTheSameNumberOfResults();
+            this.steps.ThenTheResultDtoResultsShouldEqualTheJsonResults();
+        }
+
+        [Fact]
         public void CanWriteASingleResult()
         {
             this.steps.GivenIHaveASingleOrArrayDto();
@@ -69,16 +79,6 @@ namespace SLOBSharp.Tests.Domain.Mapping
 
             this.steps.ThenTheResultingJsonStringShouldHaveAValue();
             this.steps.ThenTheResultingJsonStringShouldContainTheDtoValues();
-        }
-
-        [Fact]
-        public void CanConvertListTypes()
-        {
-            this.steps.GivenIHaveASingleOrArrayConverter();
-
-            this.steps.WhenIAskToConvertListType();
-
-            this.steps.ThenIShouldBeAbleToConvertListTypes();
         }
     }
 }
