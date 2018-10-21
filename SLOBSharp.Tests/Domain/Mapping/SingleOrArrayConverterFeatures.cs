@@ -13,10 +13,14 @@ namespace SLOBSharp.Tests.Domain.Mapping
         }
 
         [Fact]
-        public void CanConvertSingleResult()
+        public void CanConvertAnArrayOfResults()
         {
-            this.steps.GivenIHaveAResultString();
-            this.steps.GivenIHaveJsonWithASingleResult();
+            for (var i = 0; i < new Random().Next(1, 20); i++)
+            {
+                this.steps.GivenIHaveAResultString();
+            }
+
+            this.steps.GivenIHaveJsonWithMultipleResults();
 
             this.steps.WhenIDeserializeTheJson();
 
@@ -27,14 +31,10 @@ namespace SLOBSharp.Tests.Domain.Mapping
         }
 
         [Fact]
-        public void CanConvertAnArrayOfResults()
+        public void CanConvertSingleResult()
         {
-            for (var i = 0; i < new Random().Next(1, 20); i++)
-            {
-                this.steps.GivenIHaveAResultString();
-            }
-
-            this.steps.GivenIHaveJsonWithMultipleResults();
+            this.steps.GivenIHaveAResultString();
+            this.steps.GivenIHaveJsonWithASingleResult();
 
             this.steps.WhenIDeserializeTheJson();
 

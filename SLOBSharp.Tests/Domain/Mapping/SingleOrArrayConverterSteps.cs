@@ -22,10 +22,31 @@ namespace SLOBSharp.Tests.Domain.Mapping
             this.results.Add(Guid.NewGuid().ToString());
         }
 
+        internal void GivenIHaveJsonWithASingleResult()
+        {
+            this.resultJson = $"{{result: \"{this.results[0]}\"}}";
+        }
+
+        internal void GivenIHaveJsonWithMultipleResults()
+        {
+            var arrayJson = JsonConvert.SerializeObject(this.results);
+            this.resultJson = $"{{result:{arrayJson}}}";
+        }
+
+        internal void ThenIShouldHaveAResultDto()
+        {
+            Assert.NotNull(this.singleOrArrayDtoResult);
+        }
+
         internal void ThenMyResultDtoShouldHaveResults()
         {
             Assert.NotNull(this.singleOrArrayDtoResult.Result);
             Assert.NotEmpty(this.singleOrArrayDtoResult.Result);
+        }
+
+        internal void ThenMyResultDtoShouldHaveTheSameNumberOfResults()
+        {
+            Assert.Equal(this.results.Count, this.singleOrArrayDtoResult.Result.Count);
         }
 
         internal void ThenTheResultDtoResultsShouldEqualTheJsonResults()
@@ -36,27 +57,6 @@ namespace SLOBSharp.Tests.Domain.Mapping
                 var actualResult = this.singleOrArrayDtoResult.Result[i];
                 Assert.Equal(expectedResult, actualResult);
             }
-        }
-
-        internal void GivenIHaveJsonWithMultipleResults()
-        {
-            var arrayJson = JsonConvert.SerializeObject(this.results);
-            this.resultJson = $"{{result:{arrayJson}}}";
-        }
-
-        internal void ThenMyResultDtoShouldHaveTheSameNumberOfResults()
-        {
-            Assert.Equal(this.results.Count, this.singleOrArrayDtoResult.Result.Count);
-        }
-
-        internal void ThenIShouldHaveAResultDto()
-        {
-            Assert.NotNull(this.singleOrArrayDtoResult);
-        }
-
-        internal void GivenIHaveJsonWithASingleResult()
-        {
-            this.resultJson = $"{{result: \"{this.results[0]}\"}}";
         }
 
         internal void WhenIDeserializeTheJson()
