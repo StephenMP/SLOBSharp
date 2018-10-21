@@ -9,7 +9,7 @@ A .NET Standard Client library used to integrate with StreamLabs OBS
 Currently, this project only supports using named pipes for SLOBS. WebSocket support may be added at a later date.
 
 ## Simple Example
-```
+```csharp
 /* 
  * This example will get the currently active scene in SLOBS
  * Make sure you have SLOBS running and that you've enabled named pipes before trying
