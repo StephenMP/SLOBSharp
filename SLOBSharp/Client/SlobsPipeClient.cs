@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using SLOBSharp.Client.Requests;
-using SLOBSharp.Domain.Client.Responses;
+using SLOBSharp.Client.Responses;
 using SLOBSharp.Domain.Services;
 
 namespace SLOBSharp.Client

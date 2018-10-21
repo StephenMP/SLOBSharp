@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using SLOBSharp.Domain.Mapping;
 
-namespace SLOBSharp.Domain.Client.Responses
+namespace SLOBSharp.Client.Responses
 {
     public enum SceneNodeType { Folder, Item };
 
