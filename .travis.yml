@@ -3,12 +3,26 @@ solution: SLOBSharp.sln
 dist: trusty
 mono: none
 dotnet: 2.1.300
-install:
-  - dotnet restore
-script:
-  - dotnet test SLOBSharp.Tests/SLOBSharp.Tests.csproj -p:CollectCoverage=true -p:CoverletOutputFormat=opencover -p:Exclude="[SLOBSharp.Tests*]*"
-  - curl -s https://codecov.io/bash > codecov
-  - chmod +x codecov
-  - ./codecov -f ./SLOBSharp.Tests/coverage.opencover.xml
 notifications:
   email: false
+install:
+  - dotnet restore
+jobs:
+  include:
+    - stage: test
+      script:
+        - dotnet build -c Release
+    - stage: test
+      script:
+        - dotnet test SLOBSharp.Tests/SLOBSharp.Tests.csproj --no-build -p:CollectCoverage=true -p:CoverletOutputFormat=opencover -p:Exclude="[SLOBSharp.Tests*]*"
+        - curl -s https://codecov.io/bash > codecov
+        - chmod +x codecov
+        - ./codecov -f ./SLOBSharp.Tests/coverage.opencover.xml
+    - stage: deploy
+      script:
+        - dotnet nuget push ./SLOBSharp/bin/Release/*.nupkg -k $NUGET_API_KEY
+stages:
+  - build
+  - test
+  - name: deploy
+    if: (branch = release)
