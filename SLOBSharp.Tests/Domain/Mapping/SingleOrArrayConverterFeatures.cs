@@ -13,7 +13,7 @@ namespace SLOBSharp.Tests.Domain.Mapping
         }
 
         [Fact]
-        public void CanConvertAnArrayOfResults()
+        public void CanReadAnArrayOfResults()
         {
             for (var i = 0; i < new Random().Next(1, 20); i++)
             {
@@ -31,7 +31,7 @@ namespace SLOBSharp.Tests.Domain.Mapping
         }
 
         [Fact]
-        public void CanConvertSingleResult()
+        public void CanCReadASingleResult()
         {
             this.steps.GivenIHaveAResultString();
             this.steps.GivenIHaveJsonWithASingleResult();
@@ -42,6 +42,43 @@ namespace SLOBSharp.Tests.Domain.Mapping
             this.steps.ThenMyResultDtoShouldHaveResults();
             this.steps.ThenMyResultDtoShouldHaveTheSameNumberOfResults();
             this.steps.ThenTheResultDtoResultsShouldEqualTheJsonResults();
+        }
+
+        [Fact]
+        public void CanCWriteAnArrayOfResults()
+        {
+            this.steps.GivenIHaveASingleOrArrayDto();
+            for (var i = 0; i < new Random().Next(1, 20); i++)
+            {
+                this.steps.GivenIHaveASingleOrArrayDtoResultValue();
+            }
+
+            this.steps.WhenISerializeTheDto();
+
+            this.steps.ThenTheResultingJsonStringShouldHaveAValue();
+            this.steps.ThenTheResultingJsonStringShouldContainTheDtoValues();
+        }
+
+        [Fact]
+        public void CanWriteASingleResult()
+        {
+            this.steps.GivenIHaveASingleOrArrayDto();
+            this.steps.GivenIHaveASingleOrArrayDtoResultValue();
+
+            this.steps.WhenISerializeTheDto();
+
+            this.steps.ThenTheResultingJsonStringShouldHaveAValue();
+            this.steps.ThenTheResultingJsonStringShouldContainTheDtoValues();
+        }
+
+        [Fact]
+        public void CanConvertListTypes()
+        {
+            this.steps.GivenIHaveASingleOrArrayConverter();
+
+            this.steps.WhenIAskToConvertListType();
+
+            this.steps.ThenIShouldBeAbleToConvertListTypes();
         }
     }
 }

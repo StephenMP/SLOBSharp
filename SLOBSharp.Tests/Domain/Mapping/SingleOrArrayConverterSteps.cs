@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using SLOBSharp.Domain.Mapping;
 using SLOBSharp.Tests.TestingResources;
 using Xunit;
 
@@ -11,6 +12,8 @@ namespace SLOBSharp.Tests.Domain.Mapping
         private readonly List<string> results;
         private string resultJson;
         private SingleOrArrayDto singleOrArrayDtoResult;
+        private SingleOrArrayConverter<string> converter;
+        private bool canConvert;
 
         public SingleOrArrayConverterSteps()
         {
@@ -62,6 +65,50 @@ namespace SLOBSharp.Tests.Domain.Mapping
         internal void WhenIDeserializeTheJson()
         {
             this.singleOrArrayDtoResult = JsonConvert.DeserializeObject<SingleOrArrayDto>(this.resultJson);
+        }
+
+        internal void GivenIHaveASingleOrArrayDto()
+        {
+            this.singleOrArrayDtoResult = new SingleOrArrayDto();
+        }
+
+        internal void GivenIHaveASingleOrArrayDtoResultValue()
+        {
+            this.singleOrArrayDtoResult.Result.Add(Guid.NewGuid().ToString());
+        }
+
+        internal void ThenTheResultingJsonStringShouldHaveAValue()
+        {
+            Assert.NotNull(this.resultJson);
+            Assert.NotEmpty(this.resultJson);
+        }
+
+        internal void ThenIShouldBeAbleToConvertListTypes()
+        {
+            Assert.True(this.canConvert);
+        }
+
+        internal void WhenIAskToConvertListType()
+        {
+            this.canConvert = this.converter.CanConvert(typeof(List<string>));
+        }
+
+        internal void GivenIHaveASingleOrArrayConverter()
+        {
+            this.converter = new SingleOrArrayConverter<string>();
+        }
+
+        internal void ThenTheResultingJsonStringShouldContainTheDtoValues()
+        {
+            foreach (var result in this.singleOrArrayDtoResult.Result)
+            {
+                Assert.Contains(result, this.resultJson);
+            }
+        }
+
+        internal void WhenISerializeTheDto()
+        {
+            this.resultJson = JsonConvert.SerializeObject(this.singleOrArrayDtoResult);
         }
     }
 }
