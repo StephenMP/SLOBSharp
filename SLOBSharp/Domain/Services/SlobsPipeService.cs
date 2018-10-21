@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using SLOBSharp.Client.Requests;
-using SLOBSharp.Domain.Client.Responses;
+using SLOBSharp.Client.Responses;
 
 namespace SLOBSharp.Domain.Services
 {
@@ -15,7 +15,11 @@ namespace SLOBSharp.Domain.Services
 
         Task<SlobsRpcResponse> ExecuteRequestAsync(ISlobsRequest request);
 
+        IEnumerable<SlobsRpcResponse> ExecuteRequests(IEnumerable<ISlobsRequest> requests);
+
         IEnumerable<SlobsRpcResponse> ExecuteRequests(params ISlobsRequest[] requests);
+
+        Task<IEnumerable<SlobsRpcResponse>> ExecuteRequestsAsync(IEnumerable<ISlobsRequest> requests);
 
         Task<IEnumerable<SlobsRpcResponse>> ExecuteRequestsAsync(params ISlobsRequest[] requests);
     }
@@ -85,6 +89,11 @@ namespace SLOBSharp.Domain.Services
             }
         }
 
+        public IEnumerable<SlobsRpcResponse> ExecuteRequests(IEnumerable<ISlobsRequest> requests)
+        {
+            return this.ExecuteRequests(requests.ToArray());
+        }
+
         public async Task<IEnumerable<SlobsRpcResponse>> ExecuteRequestsAsync(params ISlobsRequest[] requests)
         {
             using (var pipe = new NamedPipeClientStream(this.pipeName))
@@ -122,6 +131,11 @@ namespace SLOBSharp.Domain.Services
 
                 return slobsRpcResponses;
             }
+        }
+
+        public async Task<IEnumerable<SlobsRpcResponse>> ExecuteRequestsAsync(IEnumerable<ISlobsRequest> requests)
+        {
+            return await this.ExecuteRequestsAsync(requests.ToArray()).ConfigureAwait(false);
         }
     }
 }
