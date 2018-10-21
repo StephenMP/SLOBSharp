@@ -9,7 +9,7 @@ install:
   - dotnet restore
 jobs:
   include:
-    - stage: test
+    - stage: build
       script:
         - dotnet build -c Release
     - stage: test
