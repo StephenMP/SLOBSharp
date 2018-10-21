@@ -88,6 +88,15 @@ namespace SLOBSharp.Client.Responses
         }
     }
 
+    public class SlobsError
+    {
+        [JsonProperty("code")]
+        public long Code { get; set; }
+
+        [JsonProperty("message")]
+        public string Message { get; set; }
+    }
+
     public class SlobsNode
     {
         [JsonProperty("childrenIds")]
@@ -189,14 +198,14 @@ namespace SLOBSharp.Client.Responses
 
     public class SlobsRpcResponse
     {
+        [JsonProperty("error")]
+        public SlobsError Error { get; set; }
+
         [JsonProperty("id")]
         public string Id { get; set; }
 
         [JsonProperty("jsonrpc")]
         public string Jsonrpc { get; set; }
-
-        [JsonProperty("error")]
-        public SlobsError Error { get; set; }
 
         [JsonProperty("result")]
         [JsonConverter(typeof(SingleOrArrayConverter<SlobsResult>))]
@@ -216,14 +225,5 @@ namespace SLOBSharp.Client.Responses
 
         [JsonProperty("scale")]
         public Position Scale { get; set; }
-    }
-
-    public class SlobsError
-    {
-        [JsonProperty("code")]
-        public long Code { get; set; }
-
-        [JsonProperty("message")]
-        public string Message { get; set; }
     }
 }

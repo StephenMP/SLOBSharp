@@ -20,9 +20,19 @@ namespace SLOBSharp.Client
 
         Task<SlobsRpcResponse> ExecuteRequestAsync(ISlobsRequest request);
 
+        IEnumerable<SlobsRpcResponse> ExecuteRequests(IEnumerable<ISlobsRequest> requests);
+
         IEnumerable<SlobsRpcResponse> ExecuteRequests(params ISlobsRequest[] requests);
 
+        Task<IEnumerable<SlobsRpcResponse>> ExecuteRequestsAsync(IEnumerable<ISlobsRequest> requests);
+
         Task<IEnumerable<SlobsRpcResponse>> ExecuteRequestsAsync(params ISlobsRequest[] requests);
+    }
+
+    public interface ISlobsConnectionInfo
+    {
+        string PipeName { get; }
+        SlobsClientType SlobsClientType { get; }
     }
 
     public abstract class SlobsClient : ISlobsClient
@@ -51,9 +61,32 @@ namespace SLOBSharp.Client
             return this.slobsService.ExecuteRequests(requests);
         }
 
+        public IEnumerable<SlobsRpcResponse> ExecuteRequests(IEnumerable<ISlobsRequest> requests)
+        {
+            return this.slobsService.ExecuteRequests(requests);
+        }
+
         public async Task<IEnumerable<SlobsRpcResponse>> ExecuteRequestsAsync(params ISlobsRequest[] requests)
         {
             return await this.slobsService.ExecuteRequestsAsync(requests).ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<SlobsRpcResponse>> ExecuteRequestsAsync(IEnumerable<ISlobsRequest> requests)
+        {
+            return await this.slobsService.ExecuteRequestsAsync(requests).ConfigureAwait(false);
+        }
+    }
+
+    public class SlobsConnectionInfo : ISlobsConnectionInfo
+    {
+        public string PipeName { get; }
+
+        public SlobsClientType SlobsClientType { get; }
+
+        public SlobsConnectionInfo(SlobsClientType slobsClientType, string pipeName)
+        {
+            this.SlobsClientType = slobsClientType;
+            this.PipeName = pipeName;
         }
     }
 
@@ -67,23 +100,5 @@ namespace SLOBSharp.Client
         {
             this.SlobsConnectionInfo = new SlobsConnectionInfo(SlobsClientType.Pipe, pipeName);
         }
-    }
-
-    public interface ISlobsConnectionInfo
-    {
-        SlobsClientType SlobsClientType { get; }
-        string PipeName { get; }
-    }
-
-    public class SlobsConnectionInfo : ISlobsConnectionInfo
-    {
-        public SlobsConnectionInfo(SlobsClientType slobsClientType, string pipeName)
-        {
-            this.SlobsClientType = slobsClientType;
-            this.PipeName = pipeName;
-        }
-
-        public SlobsClientType SlobsClientType { get; }
-        public string PipeName { get; }
     }
 }
