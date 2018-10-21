@@ -19,10 +19,6 @@ jobs:
         - chmod +x codecov
         - ./codecov -f ./SLOBSharp.Tests/coverage.opencover.xml
     - stage: deploy
+      if: (branch = release)
       script:
-        - dotnet nuget push ./SLOBSharp/bin/Release/*.nupkg -k $NUGET_API_KEY
-stages:
-  - build
-  - test
-  - name: deploy
-    if: (branch = release)
+        - dotnet nuget push ./SLOBSharp/bin/Release/*.nupkg -k $NUGET_API_KEY    
