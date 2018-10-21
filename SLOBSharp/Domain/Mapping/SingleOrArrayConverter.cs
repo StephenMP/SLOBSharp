@@ -7,10 +7,7 @@ namespace SLOBSharp.Domain.Mapping
 {
     internal class SingleOrArrayConverter<T> : JsonConverter
     {
-        public override bool CanWrite
-        {
-            get { return false; }
-        }
+        public override bool CanWrite => true;
 
         public override bool CanConvert(Type objectType)
         {
