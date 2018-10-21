@@ -20,7 +20,12 @@ Currently, this project only supports using named pipes for SLOBS. WebSocket sup
 // Constructor takes the name of the pipe (default constructor uses the pipe name "slobs")
 var client = new SlobsPipeClient("slobs");
 
-var slobsRequest = new SlobsGetActiveSceneRequest();
+// Build our request
+var slobsRequest = SlobsRequestBuilder.NewRequest().SetMethod("activeScene").SetResource("ScenesService").BuildRequest();
+
+// Issue the request
 var slobsRpcResponse = await this.slobsClient.ExecuteRequestAsync(request).ConfigureAwait(false);
+
+// Get the result
 var activeScene = slobsRpcResponse.Result.FirstOrDefault();
 ```
