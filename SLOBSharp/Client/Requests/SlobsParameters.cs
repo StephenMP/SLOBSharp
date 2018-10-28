@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace SLOBSharp.Client.Requests
 {
-    public class SlobsParameters
+    public class SlobsParameters : IEquatable<SlobsParameters>
     {
         [JsonProperty("args")]
         public List<object> Args { get; set; }
@@ -31,6 +32,24 @@ namespace SLOBSharp.Client.Requests
         {
             this.Resource = resource;
             return this;
+        }
+
+        public bool Equals(SlobsParameters other)
+        {
+            if (this.Resource != other.Resource || this.Args.Count != other.Args.Count)
+            {
+                return false;
+            }
+
+            for (var i = 0; i < this.Args.Count; i++)
+            {
+                if (!this.Args[i].Equals(other.Args[i]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

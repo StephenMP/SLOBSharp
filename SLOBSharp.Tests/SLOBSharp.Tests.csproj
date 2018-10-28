@@ -23,4 +23,8 @@
     <ProjectReference Include="..\SLOBSharp\SLOBSharp.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Client\" />
+  </ItemGroup>
+
 </Project>
