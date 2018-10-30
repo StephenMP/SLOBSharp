@@ -13,20 +13,6 @@ namespace SLOBSharp.Tests.Domain.Services
             this.steps = new SlobsPipeServiceSteps();
         }
 
-        /*
-         SlobsRpcResponse ExecuteRequest(ISlobsRequest request);
-
-        Task<SlobsRpcResponse> ExecuteRequestAsync(ISlobsRequest request);
-
-        IEnumerable<SlobsRpcResponse> ExecuteRequests(IEnumerable<ISlobsRequest> requests);
-
-        IEnumerable<SlobsRpcResponse> ExecuteRequests(params ISlobsRequest[] requests);
-
-        Task<IEnumerable<SlobsRpcResponse>> ExecuteRequestsAsync(IEnumerable<ISlobsRequest> requests);
-
-        Task<IEnumerable<SlobsRpcResponse>> ExecuteRequestsAsync(params ISlobsRequest[] requests);
-             */
-
         [Fact]
         //[Fact(Skip = "This pipe setup only works on windows")]
         public void CanExecuteARequest()

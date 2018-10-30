@@ -42,7 +42,7 @@ namespace SLOBSharp.Tests.TestingResources.Pipes
             {
                 while (!this.disconnect)
                 {
-                    using (var server = new NamedPipeServerStream(this.PipeName))
+                    using (var server = new NamedPipeServerStream(this.PipeName, PipeDirection.InOut))
                     using (var reader = new StreamReader(server))
                     using (var writer = new StreamWriter(server) { NewLine = "\n" })
                     {
