@@ -14,7 +14,6 @@ namespace SLOBSharp.Tests.Domain.Services
         }
 
         [Fact]
-        //[Fact(Skip = "This pipe setup only works on windows")]
         public void CanExecuteARequest()
         {
             using (var pipeServer = new TestNamedPipeServer())
@@ -35,7 +34,6 @@ namespace SLOBSharp.Tests.Domain.Services
         }
 
         [Fact]
-        //[Fact(Skip = "This pipe setup only works on windows")]
         public async Task CanExecuteARequestAsync()
         {
             using (var pipeServer = new TestNamedPipeServer())
@@ -48,15 +46,14 @@ namespace SLOBSharp.Tests.Domain.Services
                 this.steps.GivenTheTestNamedPipeServerReturnsTheResponseUponRequest(pipeServer);
                 this.steps.GivenIHaveASlobsPipeService(pipeServer.PipeName);
 
-                await this.steps.WhenICallExecuteRequestAsync();
+                await this.steps.WhenICallExecuteRequestAsync().ConfigureAwait(false);
 
                 this.steps.ThenIShouldReceiveASlobsRpcResponse();
                 this.steps.ThenTheSlobsRpcResponseShouldBeTheMockedResponse();
             }
         }
 
-        //[Fact]
-        [Fact(Skip = "This pipe setup only works on windows")]
+        [Fact]
         public void CanExecuteRequests()
         {
             using (var pipeServer = new TestNamedPipeServer())
@@ -76,8 +73,7 @@ namespace SLOBSharp.Tests.Domain.Services
             }
         }
 
-        //[Fact]
-        [Fact(Skip = "This pipe setup only works on windows")]
+        [Fact]
         public async Task CanExecuteRequestsAsync()
         {
             using (var pipeServer = new TestNamedPipeServer())
@@ -90,7 +86,7 @@ namespace SLOBSharp.Tests.Domain.Services
                 this.steps.GivenTheTestNamedPipeServerReturnsTheResponseUponRequest(pipeServer);
                 this.steps.GivenIHaveASlobsPipeService(pipeServer.PipeName);
 
-                await this.steps.WhenICallExecuteRequestsAsync();
+                await this.steps.WhenICallExecuteRequestsAsync().ConfigureAwait(false);
 
                 this.steps.ThenIShouldReceiveASlobsRpcResponse();
                 this.steps.ThenTheSlobsRpcResponseShouldBeTheMockedResponse();
