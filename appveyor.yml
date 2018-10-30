@@ -1,0 +1,29 @@
+image: Visual Studio 2017
+branches:
+  only:
+  - master
+  - release
+init:
+  - cmd: git config --global core.autocrlf true
+before_build:
+  - cmd: dotnet --version
+  - cmd: dotnet restore ./src/src.csproj --verbosity m
+build_script:
+  - cmd: dotnet dotnet build -c Release
+test_script:
+  - cmd: dotnet test -c Release --no-build SLOBSharp.Tests/SLOBSharp.Tests.csproj -p:CollectCoverage=true -p:CoverletOutputFormat=opencover -p:Exclude="[SLOBSharp.Tests*]*"
+after_test:
+  - ps: |
+      $env:PATH = 'C:\msys64\usr\bin;' + $env:PATH
+      Invoke-WebRequest -Uri 'https://codecov.io/bash' -OutFile codecov.sh
+      bash codecov.sh -f "./SLOBSharp.Tests/coverage.opencover.xml"
+clone_depth: 1
+deploy:
+  - provider: NuGet
+    on:
+      branch: release
+    api_key:
+      secure: JS3CmQkbAvpyup3YC1n2vaA2+np8AHQjRglf7A/oV9kyRuUCWYRnEvhhqYLPCH8v
+    skip_symbols: false
+    symbol_server:
+    artifact: /.*\.nupkg/
