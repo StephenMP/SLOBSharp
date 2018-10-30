@@ -17,12 +17,14 @@ after_test:
       $env:PATH = 'C:\msys64\usr\bin;' + $env:PATH
       Invoke-WebRequest -Uri 'https://codecov.io/bash' -OutFile codecov.sh
       bash codecov.sh -f "./SLOBSharp.Tests/coverage.opencover.xml"
+artifacts:
+  - path: '**\*.nupkg'
+    name: nugetpackage
 deploy:
   - provider: NuGet
     on:
       branch: release
     api_key:
       secure: JS3CmQkbAvpyup3YC1n2vaA2+np8AHQjRglf7A/oV9kyRuUCWYRnEvhhqYLPCH8v
-    skip_symbols: false
-    symbol_server:
-    artifact: /.*\.nupkg/
+    skip_symbols: true
+    artifact: nugetpackage
