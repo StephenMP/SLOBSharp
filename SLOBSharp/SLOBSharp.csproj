@@ -10,7 +10,7 @@
     <RepositoryUrl>https://github.com/StephenMP/SLOBSharp</RepositoryUrl>
     <RepositoryType>GIT</RepositoryType>
     <NeutralLanguage>en</NeutralLanguage>
-    <Version>1.1.1</Version>
+    <Version>1.1.2</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
