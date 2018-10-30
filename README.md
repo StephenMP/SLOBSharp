@@ -6,7 +6,7 @@ A .NET Standard Client library used to integrate with StreamLabs OBS
 |[![Build Status](https://travis-ci.org/StephenMP/SLOBSharp.svg?branch=master)](https://travis-ci.org/StephenMP/SLOBSharp)|[![Build Status](https://travis-ci.org/StephenMP/SLOBSharp.svg?branch=release)](https://travis-ci.org/StephenMP/SLOBSharp) [![NuGet](https://img.shields.io/nuget/v/SLOBSharp.svg)](https://www.nuget.org/packages/SLOBSharp/) [![NuGet](https://img.shields.io/nuget/dt/SLOBSharp.svg)](https://www.nuget.org/packages/SLOBSharp/)|[![codecov](https://codecov.io/gh/StephenMP/SLOBSharp/branch/master/graph/badge.svg)](https://codecov.io/gh/StephenMP/SLOBSharp)|
 
 ## Current API Support
-Currently, this project only supports using named pipes for SLOBS. WebSocket support may be added at a later date.
+Currently, this project only supports using named pipes for [StreamLabs OBS](https://streamlabs.com/streamlabs-obs). WebSocket support may be added at a later date.
 
 ## Simple Example
 ```csharp
