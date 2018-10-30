@@ -17,6 +17,7 @@ after_test:
       $env:PATH = 'C:\msys64\usr\bin;' + $env:PATH
       Invoke-WebRequest -Uri 'https://codecov.io/bash' -OutFile codecov.sh
       bash codecov.sh -f "./SLOBSharp.Tests/coverage.opencover.xml"
+  - cmd: dotnet nuget push ./SLOBSharp/bin/Release/*.nupkg -k $NUGET_API_KEY -s https://api.nuget.org/v3/index.json
 deploy:
   - provider: NuGet
     on:
