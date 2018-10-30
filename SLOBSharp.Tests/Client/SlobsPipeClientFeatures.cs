@@ -58,29 +58,34 @@ namespace SLOBSharp.Tests.Client
             this.steps.ThenTheResponseShouldBeTheMockedResponse();
         }
 
-        [Fact]
-        public void CanExecuteMultipleRequests()
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void CanExecuteMultipleRequests(bool asEnumerable)
         {
             this.steps.GivenIHaveMultipleRequests(10);
             this.steps.GivenIHaveMultipleMockedResponse();
             this.steps.GivenIHaveAMockedSlobsPipeService();
             this.steps.GivenIHaveASlobsPipeClient();
 
-            this.steps.WhenICallExecuteRequests();
+            this.steps.WhenICallExecuteRequests(asEnumerable);
 
             this.steps.ThenIShouldReceiveResponses();
             this.steps.ThenTheResponsesShouldBeTheMockedResponses();
         }
 
-        [Fact]
-        public async Task CanExecuteMultipleRequestsAsync()
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public async Task CanExecuteMultipleRequestsAsync(bool asEnumerable)
         {
             this.steps.GivenIHaveMultipleRequests(10);
             this.steps.GivenIHaveMultipleMockedResponse();
             this.steps.GivenIHaveAMockedSlobsPipeService();
             this.steps.GivenIHaveASlobsPipeClient();
 
-            await this.steps.WhenICallExecuteRequestsAsync().ConfigureAwait(false);
+            await this.steps.WhenICallExecuteRequestsAsync(asEnumerable).ConfigureAwait(false);
 
             this.steps.ThenIShouldReceiveResponses();
             this.steps.ThenTheResponsesShouldBeTheMockedResponses();

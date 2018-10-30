@@ -37,6 +37,7 @@ namespace SLOBSharp.Tests.Client
         private SlobsRpcResponse slobsRpcResponse;
         private IEnumerable<SlobsRpcResponse> slobsRpcResponses;
         private readonly List<ISlobsRequest> slobsRequests;
+        private ISlobsRequest[] slobsRequestsArray;
         private readonly List<SlobsRpcResponse> mockedSlobsRpcResponses;
 
         public SlobsPipeClientSteps()
@@ -88,9 +89,17 @@ namespace SLOBSharp.Tests.Client
             }
         }
 
-        internal void WhenICallExecuteRequests()
+        internal void WhenICallExecuteRequests(bool asEnumerable = false)
         {
-            this.slobsRpcResponses = this.slobsPipeClient.ExecuteRequests(this.slobsRequests);
+            if (asEnumerable)
+            {
+                this.slobsRpcResponses = this.slobsPipeClient.ExecuteRequests(this.slobsRequests);
+            }
+
+            else
+            {
+                this.slobsRpcResponses = this.slobsPipeClient.ExecuteRequests(this.slobsRequestsArray);
+            }
         }
 
         internal void GivenIHaveMultipleMockedResponse()
@@ -101,11 +110,21 @@ namespace SLOBSharp.Tests.Client
                 var slobsRpcResponse = new SlobsRpcResponse { Result = new[] { slobsResult } };
                 this.mockedSlobsRpcResponses.Add(slobsRpcResponse);
             }
+
+            this.slobsRequestsArray = this.slobsRequests.ToArray();
         }
 
-        internal async Task WhenICallExecuteRequestsAsync()
+        internal async Task WhenICallExecuteRequestsAsync(bool asEnumerable = false)
         {
-            this.slobsRpcResponses = await this.slobsPipeClient.ExecuteRequestsAsync(this.slobsRequests).ConfigureAwait(false);
+            if (asEnumerable)
+            {
+                this.slobsRpcResponses = await this.slobsPipeClient.ExecuteRequestsAsync(this.slobsRequests).ConfigureAwait(false);
+            }
+
+            else
+            {
+                this.slobsRpcResponses = await this.slobsPipeClient.ExecuteRequestsAsync(this.slobsRequestsArray).ConfigureAwait(false);
+            }
         }
 
         internal void GivenIHaveMultipleRequests(int numberOfRequests)
@@ -156,7 +175,9 @@ namespace SLOBSharp.Tests.Client
             this.mockedSlobsPipeService.Setup(s => s.ExecuteRequest(this.slobsRequest)).Returns(this.mockedSlobsRpcResponse);
             this.mockedSlobsPipeService.Setup(s => s.ExecuteRequestAsync(this.slobsRequest)).Returns(Task.FromResult(this.mockedSlobsRpcResponse));
             this.mockedSlobsPipeService.Setup(s => s.ExecuteRequests(this.slobsRequests)).Returns(this.mockedSlobsRpcResponses);
+            this.mockedSlobsPipeService.Setup(s => s.ExecuteRequests(this.slobsRequestsArray)).Returns(this.mockedSlobsRpcResponses);
             this.mockedSlobsPipeService.Setup(s => s.ExecuteRequestsAsync(this.slobsRequests)).Returns(Task.FromResult(this.mockedSlobsRpcResponses as IEnumerable<SlobsRpcResponse>));
+            this.mockedSlobsPipeService.Setup(s => s.ExecuteRequestsAsync(this.slobsRequestsArray)).Returns(Task.FromResult(this.mockedSlobsRpcResponses as IEnumerable<SlobsRpcResponse>));
         }
 
         internal void GivenIHaveAMockedResponse()

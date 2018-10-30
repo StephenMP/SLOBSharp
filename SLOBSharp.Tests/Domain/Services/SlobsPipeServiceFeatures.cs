@@ -27,7 +27,8 @@ namespace SLOBSharp.Tests.Domain.Services
         Task<IEnumerable<SlobsRpcResponse>> ExecuteRequestsAsync(params ISlobsRequest[] requests);
              */
 
-        [Fact(Skip = "This pipe setup only works on windows")]
+        [Fact]
+        //[Fact(Skip = "This pipe setup only works on windows")]
         public void CanExecuteARequest()
         {
             using (var pipeServer = new TestNamedPipeServer())
@@ -47,7 +48,8 @@ namespace SLOBSharp.Tests.Domain.Services
             }
         }
 
-        [Fact(Skip = "This pipe setup only works on windows")]
+        [Fact]
+        //[Fact(Skip = "This pipe setup only works on windows")]
         public async Task CanExecuteARequestAsync()
         {
             using (var pipeServer = new TestNamedPipeServer())
@@ -67,6 +69,7 @@ namespace SLOBSharp.Tests.Domain.Services
             }
         }
 
+        //[Fact]
         [Fact(Skip = "This pipe setup only works on windows")]
         public void CanExecuteRequests()
         {
@@ -87,6 +90,7 @@ namespace SLOBSharp.Tests.Domain.Services
             }
         }
 
+        //[Fact]
         [Fact(Skip = "This pipe setup only works on windows")]
         public async Task CanExecuteRequestsAsync()
         {
