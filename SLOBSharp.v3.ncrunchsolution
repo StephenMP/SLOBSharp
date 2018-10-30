@@ -1,6 +1,9 @@
 ﻿<SolutionConfiguration>
   <Settings>
     <AllowParallelTestExecution>True</AllowParallelTestExecution>
+    <MetricsExclusionList>
+      <Value>SLOBSharp.Tests\SLOBSharp.Tests.csproj</Value>
+    </MetricsExclusionList>
     <SolutionConfigured>True</SolutionConfigured>
   </Settings>
 </SolutionConfiguration>

@@ -9,7 +9,7 @@ using SLOBSharp.Client.Responses;
 
 namespace SLOBSharp.Domain.Services
 {
-    internal interface ISlobsService
+    public interface ISlobsService
     {
         SlobsRpcResponse ExecuteRequest(ISlobsRequest request);
 
@@ -24,7 +24,7 @@ namespace SLOBSharp.Domain.Services
         Task<IEnumerable<SlobsRpcResponse>> ExecuteRequestsAsync(params ISlobsRequest[] requests);
     }
 
-    internal class SlobsPipeService : ISlobsService
+    public class SlobsPipeService : ISlobsService
     {
         private readonly string pipeName;
 

@@ -10,10 +10,10 @@ namespace SLOBSharp.Tests.Domain.Mapping
     internal class SingleOrArrayConverterSteps
     {
         private readonly List<string> results;
+        private bool canConvert;
+        private SingleOrArrayConverter<string> converter;
         private string resultJson;
         private SingleOrArrayDto singleOrArrayDtoResult;
-        private SingleOrArrayConverter<string> converter;
-        private bool canConvert;
 
         public SingleOrArrayConverterSteps()
         {
@@ -25,6 +25,21 @@ namespace SLOBSharp.Tests.Domain.Mapping
             this.results.Add(Guid.NewGuid().ToString());
         }
 
+        internal void GivenIHaveASingleOrArrayConverter()
+        {
+            this.converter = new SingleOrArrayConverter<string>();
+        }
+
+        internal void GivenIHaveASingleOrArrayDto()
+        {
+            this.singleOrArrayDtoResult = new SingleOrArrayDto();
+        }
+
+        internal void GivenIHaveASingleOrArrayDtoResultValue()
+        {
+            this.singleOrArrayDtoResult.Result.Add(Guid.NewGuid().ToString());
+        }
+
         internal void GivenIHaveJsonWithASingleResult()
         {
             this.resultJson = $"{{result: \"{this.results[0]}\"}}";
@@ -34,6 +49,11 @@ namespace SLOBSharp.Tests.Domain.Mapping
         {
             var arrayJson = JsonConvert.SerializeObject(this.results);
             this.resultJson = $"{{result:{arrayJson}}}";
+        }
+
+        internal void ThenIShouldBeAbleToConvertListTypes()
+        {
+            Assert.True(this.canConvert);
         }
 
         internal void ThenIShouldHaveAResultDto()
@@ -62,19 +82,12 @@ namespace SLOBSharp.Tests.Domain.Mapping
             }
         }
 
-        internal void WhenIDeserializeTheJson()
+        internal void ThenTheResultingJsonStringShouldContainTheDtoValues()
         {
-            this.singleOrArrayDtoResult = JsonConvert.DeserializeObject<SingleOrArrayDto>(this.resultJson);
-        }
-
-        internal void GivenIHaveASingleOrArrayDto()
-        {
-            this.singleOrArrayDtoResult = new SingleOrArrayDto();
-        }
-
-        internal void GivenIHaveASingleOrArrayDtoResultValue()
-        {
-            this.singleOrArrayDtoResult.Result.Add(Guid.NewGuid().ToString());
+            foreach (var result in this.singleOrArrayDtoResult.Result)
+            {
+                Assert.Contains(result, this.resultJson);
+            }
         }
 
         internal void ThenTheResultingJsonStringShouldHaveAValue()
@@ -83,27 +96,14 @@ namespace SLOBSharp.Tests.Domain.Mapping
             Assert.NotEmpty(this.resultJson);
         }
 
-        internal void ThenIShouldBeAbleToConvertListTypes()
-        {
-            Assert.True(this.canConvert);
-        }
-
         internal void WhenIAskToConvertListType()
         {
             this.canConvert = this.converter.CanConvert(typeof(List<string>));
         }
 
-        internal void GivenIHaveASingleOrArrayConverter()
+        internal void WhenIDeserializeTheJson()
         {
-            this.converter = new SingleOrArrayConverter<string>();
-        }
-
-        internal void ThenTheResultingJsonStringShouldContainTheDtoValues()
-        {
-            foreach (var result in this.singleOrArrayDtoResult.Result)
-            {
-                Assert.Contains(result, this.resultJson);
-            }
+            this.singleOrArrayDtoResult = JsonConvert.DeserializeObject<SingleOrArrayDto>(this.resultJson);
         }
 
         internal void WhenISerializeTheDto()

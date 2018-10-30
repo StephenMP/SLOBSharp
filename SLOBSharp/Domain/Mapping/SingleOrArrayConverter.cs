@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -24,7 +25,8 @@ namespace SLOBSharp.Domain.Mapping
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            List<T> list = (List<T>)value;
+            var enumerable = value as IEnumerable<T>;
+            var list = enumerable.ToList();
             if (list.Count == 1)
             {
                 value = list[0];
