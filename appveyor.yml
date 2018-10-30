@@ -9,7 +9,7 @@ before_build:
   - cmd: dotnet --version
   - cmd: dotnet restore --verbosity m
 build_script:
-  - cmd: dotnet dotnet build -c Release
+  - cmd: dotnet build -c Release
 test_script:
   - cmd: dotnet test -c Release --no-build SLOBSharp.Tests/SLOBSharp.Tests.csproj -p:CollectCoverage=true -p:CoverletOutputFormat=opencover -p:Exclude="[SLOBSharp.Tests*]*"
 after_test:
