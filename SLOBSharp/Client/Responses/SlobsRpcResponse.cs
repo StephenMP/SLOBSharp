@@ -1,28 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using SLOBSharp.Domain.Mapping;
 
 namespace SLOBSharp.Client.Responses
 {
     public enum SceneNodeType { Folder, Item };
 
-    public static class Converter
-    {
-        public static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
-        {
-            MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
-            DateParseHandling = DateParseHandling.None,
-            Converters = {
-                SceneNodeTypeConverter.Singleton,
-                new IsoDateTimeConverter { DateTimeStyles = DateTimeStyles.AssumeUniversal }
-            },
-        };
-    }
-
-    public partial class Crop
+    public class Crop
     {
         [JsonProperty("bottom")]
         public long Bottom { get; set; }
@@ -37,7 +22,7 @@ namespace SLOBSharp.Client.Responses
         public long Top { get; set; }
     }
 
-    public partial class Position
+    public class Position
     {
         [JsonProperty("x")]
         public double X { get; set; }
@@ -48,15 +33,12 @@ namespace SLOBSharp.Client.Responses
 
     public class SceneNodeTypeConverter : JsonConverter
     {
-        public static readonly SceneNodeTypeConverter Singleton = new SceneNodeTypeConverter();
-
         public override bool CanConvert(Type objectType) => objectType == typeof(SceneNodeType) || objectType == typeof(SceneNodeType?);
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             if (reader.TokenType == JsonToken.Null) return null;
-            var value = serializer.Deserialize<string>(reader);
-            switch (value)
+            switch (serializer.Deserialize<string>(reader))
             {
                 case "folder":
                     return SceneNodeType.Folder;
@@ -64,16 +46,14 @@ namespace SLOBSharp.Client.Responses
                 case "item":
                     return SceneNodeType.Item;
             }
+
             throw new Exception("Cannot unmarshal type SceneNodeType");
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            if (value == null)
-            {
-                serializer.Serialize(writer, null);
-                return;
-            }
+            if (value == null) serializer.Serialize(writer, null);
+
             switch ((SceneNodeType)value)
             {
                 case SceneNodeType.Folder:
@@ -100,10 +80,10 @@ namespace SLOBSharp.Client.Responses
     public class SlobsNode
     {
         [JsonProperty("childrenIds")]
-        public List<Guid> ChildrenIds { get; set; }
+        public List<string> ChildrenIds { get; set; }
 
         [JsonProperty("id")]
-        public Guid Id { get; set; }
+        public string Id { get; set; }
 
         [JsonProperty("locked")]
         public bool? Locked { get; set; }
@@ -124,9 +104,10 @@ namespace SLOBSharp.Client.Responses
         public string SceneId { get; set; }
 
         [JsonProperty("sceneItemId")]
-        public Guid? SceneItemId { get; set; }
+        public string SceneItemId { get; set; }
 
         [JsonProperty("sceneNodeType")]
+        [JsonConverter(typeof(SceneNodeTypeConverter))]
         public SceneNodeType SceneNodeType { get; set; }
 
         [JsonProperty("sourceId")]
