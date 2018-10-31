@@ -64,6 +64,7 @@ namespace SLOBSharp.Client.Responses
                     serializer.Serialize(writer, "item");
                     return;
             }
+
             throw new Exception("Cannot marshal type SceneNodeType");
         }
     }

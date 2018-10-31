@@ -39,14 +39,12 @@ namespace SLOBSharp.Domain.Services
 
         public SlobsRpcResponse ExecuteRequest(ISlobsRequest request)
         {
-            var results = this.ExecuteRequests(request);
-            return results.FirstOrDefault();
+            return this.ExecuteRequests(request)?.FirstOrDefault();
         }
 
         public async Task<SlobsRpcResponse> ExecuteRequestAsync(ISlobsRequest request)
         {
-            var results = await this.ExecuteRequestsAsync(request).ConfigureAwait(false);
-            return results.FirstOrDefault();
+            return (await this.ExecuteRequestsAsync(request).ConfigureAwait(false))?.FirstOrDefault();
         }
 
         public IEnumerable<SlobsRpcResponse> ExecuteRequests(NamedPipeClientStream pipe, StreamReader reader, StreamWriter writer, ISlobsRequest[] requests)
