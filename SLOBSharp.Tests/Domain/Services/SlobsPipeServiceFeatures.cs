@@ -1,96 +1,86 @@
-﻿using System.Threading.Tasks;
-using SLOBSharp.Tests.TestingResources.Pipes;
+﻿using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace SLOBSharp.Tests.Domain.Services
 {
-    public class SlobsPipeServiceFeatures
+    public class SlobsPipeServiceFeatures : IDisposable
     {
-        private SlobsPipeServiceSteps steps;
+        private readonly SlobsPipeServiceSteps steps;
 
         public SlobsPipeServiceFeatures()
         {
             this.steps = new SlobsPipeServiceSteps();
         }
 
-        [Fact]
-        public void CanExecuteARequest()
+        [Theory]
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(3)]
+        [InlineData(4)]
+        [InlineData(5)]
+        [InlineData(6)]
+        [InlineData(7)]
+        [InlineData(8)]
+        [InlineData(9)]
+        [InlineData(10)]
+        public void CanExecuteRequests(int numberOfRequests)
         {
-            using (var pipeServer = new TestNamedPipeServer())
+            this.steps.GivenIHaveSlobsRequests(numberOfRequests);
+            this.steps.GivenIHaveMultipleMockedResponse();
+            this.steps.GivenIHaveAMockedStreamWriter();
+            this.steps.GivenIHaveAMockedStreamReader();
+            this.steps.GivenIHaveASlobsPipeService();
+
+            this.steps.WhenICallExecuteRequests();
+
+            this.steps.ThenIShouldReceiveAResponse();
+        }
+
+        [Theory]
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(3)]
+        [InlineData(4)]
+        [InlineData(5)]
+        [InlineData(6)]
+        [InlineData(7)]
+        [InlineData(8)]
+        [InlineData(9)]
+        [InlineData(10)]
+        public async Task CanExecuteRequestsAsync(int numberOfRequests)
+        {
+            this.steps.GivenIHaveSlobsRequests(numberOfRequests);
+            this.steps.GivenIHaveMultipleMockedResponse();
+            this.steps.GivenIHaveAMockedStreamWriter();
+            this.steps.GivenIHaveAMockedStreamReader();
+            this.steps.GivenIHaveASlobsPipeService();
+
+            await this.steps.WhenICallExecuteRequestsAsync().ConfigureAwait(false);
+
+            this.steps.ThenIShouldReceiveAResponse();
+        }
+
+        #region IDisposable Support
+        private bool disposedValue;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
             {
-                pipeServer.StartServer();
+                if (disposing)
+                {
+                    this.steps?.Dispose();
+                }
 
-                this.steps.GivenIHaveARequestId();
-                this.steps.GivenIHaveASlobsRequest();
-                this.steps.GivenIHaveAMockedSlobsRpcResponse();
-                this.steps.GivenTheTestNamedPipeServerReturnsTheResponseUponRequest(pipeServer);
-                this.steps.GivenIHaveASlobsPipeService(pipeServer.PipeName);
-
-                this.steps.WhenICallExecuteRequest();
-
-                this.steps.ThenIShouldReceiveASlobsRpcResponse();
-                this.steps.ThenTheSlobsRpcResponseShouldBeTheMockedResponse();
+                disposedValue = true;
             }
         }
 
-        [Fact]
-        public async Task CanExecuteARequestAsync()
+        public void Dispose()
         {
-            using (var pipeServer = new TestNamedPipeServer())
-            {
-                pipeServer.StartServer();
-
-                this.steps.GivenIHaveARequestId();
-                this.steps.GivenIHaveASlobsRequest();
-                this.steps.GivenIHaveAMockedSlobsRpcResponse();
-                this.steps.GivenTheTestNamedPipeServerReturnsTheResponseUponRequest(pipeServer);
-                this.steps.GivenIHaveASlobsPipeService(pipeServer.PipeName);
-
-                await this.steps.WhenICallExecuteRequestAsync().ConfigureAwait(false);
-
-                this.steps.ThenIShouldReceiveASlobsRpcResponse();
-                this.steps.ThenTheSlobsRpcResponseShouldBeTheMockedResponse();
-            }
+            Dispose(true);
         }
-
-        [Fact]
-        public void CanExecuteRequests()
-        {
-            using (var pipeServer = new TestNamedPipeServer())
-            {
-                pipeServer.StartServer();
-
-                this.steps.GivenIHaveARequestId();
-                this.steps.GivenIHaveASlobsRequestAsList();
-                this.steps.GivenIHaveAMockedSlobsRpcResponse();
-                this.steps.GivenTheTestNamedPipeServerReturnsTheResponseUponRequest(pipeServer);
-                this.steps.GivenIHaveASlobsPipeService(pipeServer.PipeName);
-
-                this.steps.WhenICallExecuteRequests();
-
-                this.steps.ThenIShouldReceiveASlobsRpcResponse();
-                this.steps.ThenTheSlobsRpcResponseShouldBeTheMockedResponse();
-            }
-        }
-
-        [Fact]
-        public async Task CanExecuteRequestsAsync()
-        {
-            using (var pipeServer = new TestNamedPipeServer())
-            {
-                pipeServer.StartServer();
-
-                this.steps.GivenIHaveARequestId();
-                this.steps.GivenIHaveASlobsRequestAsList();
-                this.steps.GivenIHaveAMockedSlobsRpcResponse();
-                this.steps.GivenTheTestNamedPipeServerReturnsTheResponseUponRequest(pipeServer);
-                this.steps.GivenIHaveASlobsPipeService(pipeServer.PipeName);
-
-                await this.steps.WhenICallExecuteRequestsAsync().ConfigureAwait(false);
-
-                this.steps.ThenIShouldReceiveASlobsRpcResponse();
-                this.steps.ThenTheSlobsRpcResponseShouldBeTheMockedResponse();
-            }
-        }
+        #endregion
     }
 }

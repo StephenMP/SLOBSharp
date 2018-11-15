@@ -110,8 +110,6 @@ namespace SLOBSharp.Tests.Client
                 var slobsRpcResponse = new SlobsRpcResponse { Result = new[] { slobsResult } };
                 this.mockedSlobsRpcResponses.Add(slobsRpcResponse);
             }
-
-            this.slobsRequestsArray = this.slobsRequests.ToArray();
         }
 
         internal async Task WhenICallExecuteRequestsAsync(bool asEnumerable = false)
@@ -139,6 +137,8 @@ namespace SLOBSharp.Tests.Client
 
                 this.slobsRequests.Add(slobsRequest);
             }
+
+            this.slobsRequestsArray = this.slobsRequests.ToArray();
         }
 
         internal void ThenTheResponseShouldBeTheMockedResponse()

@@ -17,11 +17,6 @@ namespace SLOBSharp.Client.Requests
             this.Args = new List<object>();
         }
 
-        public SlobsParameters(string resource) : this()
-        {
-            this.Resource = resource;
-        }
-
         public SlobsParameters AddArgs(params object[] args)
         {
             this.Args.AddRange(args);
@@ -36,20 +31,14 @@ namespace SLOBSharp.Client.Requests
 
         public bool Equals(SlobsParameters other)
         {
-            if (this.Resource != other.Resource || this.Args.Count != other.Args.Count)
-            {
-                return false;
-            }
+            var equal = this.Resource == other.Resource && this.Args.Count == other.Args.Count;
 
             for (var i = 0; i < this.Args.Count; i++)
             {
-                if (!this.Args[i].Equals(other.Args[i]))
-                {
-                    return false;
-                }
+                equal = equal && this.Args[i].Equals(other.Args[i]);
             }
 
-            return true;
+            return equal;
         }
     }
 }
