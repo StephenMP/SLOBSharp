@@ -15,6 +15,11 @@ namespace SLOBSharp.Domain.Mapping
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var token = JToken.Load(reader);
+            if (token.Type == JTokenType.Boolean)
+            {
+                return new List<T>();
+            }
+
             if (token.Type == JTokenType.Array)
             {
                 return token.ToObject<List<T>>();
