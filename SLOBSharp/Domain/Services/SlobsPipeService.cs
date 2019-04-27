@@ -70,6 +70,7 @@ namespace SLOBSharp.Domain.Services
                 {
                     responseJson = reader.ReadLine();
                     response = JsonConvert.DeserializeObject<SlobsRpcResponse>(responseJson);
+                    response.JsonResponse = responseJson;
                     slobsRpcResponses.Add(response);
                 }
 
@@ -118,6 +119,7 @@ namespace SLOBSharp.Domain.Services
                 {
                     responseJson = await reader.ReadLineAsync().ConfigureAwait(false);
                     response = JsonConvert.DeserializeObject<SlobsRpcResponse>(responseJson);
+                    response.JsonResponse = responseJson;
                     slobsRpcResponses.Add(response);
                 }
 
