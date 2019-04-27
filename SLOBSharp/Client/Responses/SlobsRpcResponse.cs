@@ -189,6 +189,8 @@ namespace SLOBSharp.Client.Responses
         [JsonProperty("jsonrpc")]
         public string Jsonrpc { get; set; }
 
+        public string JsonResponse { get; set; }
+
         [JsonProperty("result")]
         [JsonConverter(typeof(SingleOrArrayConverter<SlobsResult>))]
         public IEnumerable<SlobsResult> Result { get; set; }
