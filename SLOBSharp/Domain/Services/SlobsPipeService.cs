@@ -59,7 +59,6 @@ namespace SLOBSharp.Domain.Services
             {
                 foreach (var request in requestsChunk)
                 {
-                    var requestJson = request.ToJson();
                     writer.WriteLine(request.ToJson());
                 }
 
